@@ -43,7 +43,7 @@ class WithdrawForm
         $form->addButton("§6» §aWithdraw All §6«\n§8Withdraw $coinsAtBank", 1, "https://cdn-icons-png.flaticon.com/128/2535/2535077.png");
         $form->addButton("§6» §aWithdraw Half §6«\n§8Withdraw " . ($coinsAtBank / 2), 1, "https://cdn-icons-png.flaticon.com/128/2535/2535077.png");
         $form->addButton("§6» §aWithdraw Custom §6«\n§8Withdraw Any", 1, "https://cdn-icons-png.flaticon.com/128/2535/2535077.png");
-        $form->addButton("§cBack", 1, "textures/blocks/barrier");
+        $form->addButton("§cBack", 0, "textures/blocks/barrier");
 
         return $form;
     }
