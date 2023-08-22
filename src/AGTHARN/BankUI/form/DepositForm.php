@@ -7,7 +7,7 @@ use pocketmine\player\Player;
 use AGTHARN\BankUI\bank\Banks;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
-use onebone\economyapi\EconomyAPI;
+use davidglitch04\libEco\libEco;
 
 class DepositForm
 {
@@ -45,7 +45,7 @@ class DepositForm
         $form->addButton("§6» §aDeposit All §6«\n§8Deposit $coinsInHand", 1, "https://cdn-icons-png.flaticon.com/128/1041/1041888.png");
         $form->addButton("§6» §aDeposit Half §6«\n§8Deposit " . ($coinsInHand / 2), 1, "https://cdn-icons-png.flaticon.com/128/1041/1041888.png");
         $form->addButton("§6» §aDeposit Custom §6«\n§8Deposit Any", 1, "https://cdn-icons-png.flaticon.com/128/1041/1041888.png");
-        $form->addButton("§cBack", 1, "textures/blocks/barrier");
+        $form->addButton("§cBack", 0, "textures/blocks/barrier");
         
         return $form;
     }
@@ -53,7 +53,9 @@ class DepositForm
     public static function depositCustomForm(Player $player): CustomForm
     {
         $playerSession = Main::getInstance()->getSessionManager()->getSession($player);
-        $coinsInHand = EconomyAPI::getInstance()->myMoney($player);
+        $coinsInHand = libEco::myMoney($player, static function(float $money) : void {
+	    var_dump($money);
+         });
         $bankName = $playerSession->bankProvider;
 
         $form = new CustomForm(function (Player $player, ?array $data = null) use ($playerSession) {
