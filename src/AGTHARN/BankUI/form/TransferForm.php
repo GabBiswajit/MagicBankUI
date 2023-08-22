@@ -6,7 +6,7 @@ use AGTHARN\BankUI\Main;
 use pocketmine\player\Player;
 use AGTHARN\BankUI\bank\Banks;
 use jojoe77777\FormAPI\CustomForm;
-use onebone\economyapi\EconomyAPI;
+use davidglitch04\libEco\libEco;
 
 class TransferForm
 {
@@ -36,7 +36,9 @@ class TransferForm
     public static function confirmTransferForm(Player $player, string $receiverName, float $amount, float $transferTax): CustomForm
     {
         $playerSession = Main::getInstance()->getSessionManager()->getSession($player);
-        $coinsInHand = EconomyAPI::getInstance()->myMoney($player);
+        $coinsInHand = libEco::myMoney($player, static function(float $money) : void {
+	    var_dump($money);
+         });
         $bankName = $playerSession->bankProvider;
 
         $form = new CustomForm(function (Player $player, ?array $data = null) use ($amount, $receiverName, $playerSession) {
