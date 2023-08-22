@@ -6,7 +6,7 @@ use AGTHARN\BankUI\Main;
 use pocketmine\player\Player;
 use AGTHARN\BankUI\bank\Banks;
 use jojoe77777\FormAPI\SimpleForm;
-use onebone\economyapi\EconomyAPI;
+use davidglitch04\libEco\libEco;
 
 class MenuForm
 {
@@ -24,12 +24,12 @@ class MenuForm
             }
             $player->sendForm(self::getViewBankForm($player, Banks::BANKS[$data]));
         });
-        $form->setTitle("§6» §r§lMAGIC BANK SERVICES §r§6«");
+        $form->setTitle("§6» §r§lBANK SERVICES §r§6«");
         $form->setContent("Hi, §b$playerName §f!\n\nWelcome to Magic Bank Services! First, we'd like you to choose a bank which best suits you!");
         foreach (Banks::BANKS as $bankData) {
             $form->addButton("§6» §a" . $bankData["name"] . "\n§8" . $bankData["description"], 1, $bankData["logo"]);
         }
-        $form->addButton("§l§cEXIT\n§r§dClick to close...", 1, "textures/ui/cancel");
+        $form->addButton("§l§cEXIT\n§r§dClick to close...", 0, "textures/ui/cancel");
 
         return $form;
     }
@@ -56,7 +56,7 @@ class MenuForm
         $form->setContent("Hi, §b$playerName §f! Here are the details about this bank you may be signing up for!\n\n§bDescription:\n §f" . $bankData["description"] . "\n\n§bApproval Time: §f" . $bankData["approvalSeconds"] . "s\n\n§bInterest Rate: §f" . $bankData["interestRate"] . "%\n§bDeposit Tax: §f$" . $bankData["depositTax"] . "\n§bWithdraw Tax: §f$" . $bankData["withdrawTax"] . "\n§bTransfer Tax: §f$" . $bankData["transferTax"] . "\n\n§bStarting Money: §f$" . $bankData["startingMoney"]);
         $form->addButton("§aJoin", 1, "https://cdn-icons-png.flaticon.com/512/1006/1006555.png");
         $form->addButton("§cBack", 1, "textures/blocks/barrier");
-        $form->addButton("§l§cEXIT\n§r§dClick to close...", 1, "textures/ui/cancel");
+        $form->addButton("§l§cEXIT\n§r§dClick to close...", 0, "textures/ui/cancel");
 
         return $form;
     }
@@ -76,7 +76,7 @@ class MenuForm
         });
         $form->setTitle("§6» §r§l" . $bankName . " §r§6«");
         $form->setContent("Hi, §b$playerName §f!\n\nHere at §b$bankName §f, we guarantee great services to our users! However, your bank application has yet to be approved and will be as soon as possible! Please wait patiently for your bank to be approved!\n\n§6TIME REMAINING: $timeRemaining minutes\n\n§fWe hope you enjoy your stay at $bankName and we thank you for your continuous support!\n\n§b~ §6$bankName §b~");
-        $form->addButton("§l§cEXIT\n§r§dClick to close...", 1, "textures/ui/cancel");
+        $form->addButton("§l§cEXIT\n§r§dClick to close...", 0, "textures/ui/cancel");
 
         return $form;
     }
@@ -95,7 +95,7 @@ class MenuForm
         });
         $form->setTitle("§6» §r§l" . $bankName . " §r§6«");
         $form->setContent("Hi, §b$playerName §f!\n\nYour account has been flagged and frozen for suspected illegal activities! Please create a ticket on our Discord server to appeal!\n\n§fWe thank you for using $bankName and for your continuous support!\n\n§b~ §6$bankName §b~");
-        $form->addButton("§l§cEXIT\n§r§dClick to close...", 1, "textures/ui/cancel");
+        $form->addButton("§l§cEXIT\n§r§dClick to close...", 0, "textures/ui/cancel");
 
         return $form;
     }
@@ -106,7 +106,9 @@ class MenuForm
         $playerName = $player->getName();
 
         $coinsAtBank = $playerSession->money;
-        $coinsInHand = EconomyAPI::getInstance()->myMoney($player);
+        $coinsInHand = libEco::myMoney($player, static function(float $money) : void {
+	    var_dump($money);
+        });
         $bankName = $playerSession->bankProvider;
         $bankInterest = Banks::getBankData($playerSession->bankProvider)["interestRate"];
 
@@ -149,7 +151,7 @@ class MenuForm
         $form->addButton("§6» §aConvert to Notes §6«\n§8Click To Open", 1, "https://cdn-icons-png.flaticon.com/128/1043/1043445.png");
         $form->addButton("§6» §aTransaction Logs §6«\n§8Click To Open", 1, "https://cdn-icons-png.flaticon.com/128/3135/3135679.png");
         $form->addButton("§6» §aClose Account §6«\n§8Click To Close", 1, "https://cdn-icons-png.flaticon.com/512/7158/7158854.png");
-        $form->addButton("§l§cEXIT\n§r§dClick to close...", 1, "textures/ui/cancel");
+        $form->addButton("§l§cEXIT\n§r§dClick to close...", 0, "textures/ui/cancel");
         
         return $form;
     }
