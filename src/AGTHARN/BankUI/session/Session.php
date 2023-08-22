@@ -8,9 +8,8 @@ use libMarshal\MarshalTrait;
 use pocketmine\player\Player;
 use AGTHARN\BankUI\bank\Banks;
 use libMarshal\attributes\Field;
-use pocketmine\item\ItemFactory;
-use onebone\economyapi\EconomyAPI;
-
+use pocketmine\item\VanillaItems;
+use davidglitch04\libEco\libEco;
 abstract class Session
 {
     use MarshalTrait;
@@ -89,7 +88,7 @@ abstract class Session
         $this->frozen = false;
         $this->allowed = false;
         if (is_bool($this->saveData())) {
-            $this->handleKick("MagicBankUI: Failed to reset data. Please report this immediately!");
+            $this->handleKick("BankUI: Failed to reset data. Please report this immediately!");
             return;
         }
     }
@@ -172,19 +171,15 @@ abstract class Session
             $this->handleMessage(" §cError encountered - Deposit amount must be greater than 100! $amount given!");
             return false;
         }
-        if (EconomyAPI::getInstance()->myMoney($this->player ?? $this->name) < $amount) {
-            $this->handleMessage(" §cYou do not have enough money to deposit this amount! $amount given!");
-            return false;
-        }
         if (!$this->allowed && $amount >= Banks::MONEY_LIMIT) {
             $this->handleMessage(" §cA large money transfer has been detected! Your bank account has been frozen by the authorities! Please create a ticket on our Discord server to appeal! $amount given!");
             $this->frozen = true;
             return false;
         }
 
-        if (($status = EconomyAPI::getInstance()->reduceMoney($this->player ?? $this->name, $amount, true, "BANKUI")) === EconomyAPI::RET_SUCCESS) {
+        if (($status = libEco::reduceMoney($this->player ?? $this->name, $amount, true, "BANKUI")) === libEco::RET_SUCCESS) {
             if ($amountIncludeTax) {
-                if (!(($status = EconomyAPI::getInstance()->reduceMoney($this->player ?? $this->name, $depositTax, true, "BANKUI")) === EconomyAPI::RET_SUCCESS)) {
+                if (!(($status = libEco::reduceMoney($this->player ?? $this->name, $depositTax, true, "BANKUI")) === libEco::RET_SUCCESS)) {
                     $this->handleMessage(" §cError encountered - CODE ERROR: $status!");
                     return false;
                 }
@@ -192,7 +187,7 @@ abstract class Session
             $this->addMoney($amount);
 
             if (is_bool($this->saveData())) {
-                $this->handleKick("MagicBankUI: Failed to save when depositing money. Please report this immediately!");
+                $this->handleKick("BankUI: Failed to save when depositing money. Please report this immediately!");
                 return false;
             }
             $this->transactionLogs[] = [
@@ -238,7 +233,7 @@ abstract class Session
             return false;
         }
 
-        if (($status = EconomyAPI::getInstance()->addMoney($this->player ?? $this->name, $amount, true, "BANKUI")) === EconomyAPI::RET_SUCCESS) {
+        if (($status = libEco::addMoney($this->player ?? $this->name, $amount, true, "BANKUI")) === libEco::RET_SUCCESS) {
             if (!$amountIncludeTax) {
                 if ($this->money < $amount + $withdrawTax) {
                     $this->handleMessage(" §cYou do not have enough money in your bank account to transfer this amount! " . $amount + $withdrawTax . " given!");
@@ -249,7 +244,7 @@ abstract class Session
             $this->reduceMoney($amount);
 
             if (is_bool($this->saveData())) {
-                $this->handleKick("MagicBankUI: Failed to save when withdrawing money. Please report this immediately!");
+                $this->handleKick("BankUI: Failed to save when withdrawing money. Please report this immediately!");
                 return false;
             }
             $this->transactionLogs[] = [
@@ -394,10 +389,10 @@ abstract class Session
             $this->reduceMoney($amount);
 
             if (is_bool($this->saveData())) {
-                $this->handleKick("MagicBankUI: Failed to save when converting money to notes. Please report this immediately!");
+                $this->handleKick("BankUI: Failed to save when converting money to notes. Please report this immediately!");
                 return false;
             }
-            $item = ItemFactory::getInstance()->get(1091, 0, 1);
+            $item = VanillaItems::PAPER();
             $item->setCustomName("§r§l§6$" . $amount . " §aBANK NOTE");
             $item->setLore(["§r§7Right Click To Redeem This §aBank Note§7\n§r§7Withdrawn By §f" . $this->name . "\n§r§7Date »" . date("§f d/m/y") . "\n\n§r§7Value » §a$" . $amount]);
             $item->getNamedTag()->setFloat("Amount", $amount);
