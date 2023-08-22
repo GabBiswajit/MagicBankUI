@@ -14,7 +14,7 @@ final class Banks
     /** NOTE: I WILL NOT USE BANK NAME AS THE KEY FOR A REASON! */
     public const BANKS = [
         [
-            "name" => "Bank of MagicGames",
+            "name" => "Bank of Earth",
             "description" => "The most reliable bank for players!",
             "logo" => "https://cdn-icons-png.flaticon.com/128/1086/1086741.png",
             "approvalSeconds" => 5 * 60,
@@ -25,7 +25,7 @@ final class Banks
             "startingMoney" => 100
         ],
         [
-            "name" => "Cosmic Banks",
+            "name" => "Moon Banks",
             "description" => "The best bank for growing businesses!",
             "logo" => "https://cdn-icons-png.flaticon.com/128/1138/1138038.png",
             "approvalSeconds" => 30 * 60,
@@ -36,7 +36,7 @@ final class Banks
             "startingMoney" => 0
         ],
         [
-            "name" => "Bank of Pushkar",
+            "name" => "Bank of Sun",
             "description" => "The best bank for instant approval! Receive a free sum of $1000 after signing up!",
             "logo" => "https://cdn-icons-png.flaticon.com/128/584/584011.png",
             "approvalSeconds" => 0,
@@ -47,7 +47,7 @@ final class Banks
             "startingMoney" => 1000
         ],
         [
-            "name" => "AGTHARN Inc.",
+            "name" => "Galaxy Inc.",
             "description" => "No fees, no taxes, no problems! ",
             "logo" => "https://cdn-icons-png.flaticon.com/128/584/584011.png",
             "approvalSeconds" => 30 * 60,
