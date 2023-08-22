@@ -1,9 +1,10 @@
 main : AGTHARN\BankUI\Main
 name: BankUI
-version: 4.0.0
-api: 4.0.0
-author: AGTHARN
-depend: [EconomyAPI]
+version: 1.0.0
+api: 5.0.0
+authors: 
+- AGTHARN
+- Biswajit
 
 permissions:
   bankui.admin:
