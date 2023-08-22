@@ -4,7 +4,7 @@ namespace AGTHARN\BankUI;
 
 use AGTHARN\BankUI\bank\Banks;
 use pocketmine\event\Listener;
-use onebone\economyapi\EconomyAPI;
+use davidglitch04\libEco\libEco;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -35,7 +35,7 @@ class EventListener implements Listener
             $item->setCount($item->getCount() - 1);
             $player->getInventory()->setItemInHand($item);
 
-            EconomyAPI::getInstance()->addMoney($player, $amount);
+            libEco::addMoney($player, $amount);
             $player->sendMessage(" §7You Have Claimed §e$" . $amount . "§7 Note!");
         }
     }
